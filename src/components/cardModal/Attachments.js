@@ -36,7 +36,7 @@ const AttachmentStyled = styled.div`
     justify-content: center;
     overflow: hidden;
     img {
-      object-fit: cover;
+      object-fit: contain;
       width: 100%;
       height: 100%;
     }
@@ -119,7 +119,7 @@ function NewAttachment({ onUploadedAttachment }) {
       if (res.data.success) {
         onUploadedAttachment({
           name: file[0].name,
-          url: res.data.data.Location,
+          url: res.data.data,
         });
       }
       setUploading(false);
