@@ -1,13 +1,80 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+:root {
+  --blue: #2f80ed;
+  --lightBlue: #dae4fd;
+  --green: #219653;
+  --grey: #bdbdbd;
+  --white: #fff;
+  --bgGrey: #f2f2f2;
+  --bgGreyLight: #f8f9fd;
+  --bgWhite: #fff;
+  --textBlack: #333;
+  --textGrey: #828282;
+  --textWhite: #fff;
+  --bs1: 0px 2px 2px rgba(0, 0, 0, 0.05);
+  --bs2: 0px 4px 12px rgba(0, 0, 0, 0.05);
+  --border-light: 1px solid #e0e0e0;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+html {
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+  padding: 0;
+  margin: 0;
+  box-sizing: inherit;
+}
+
+body {
+  font-size: 1rem;
+  font-family: "Poppins", sans-serif;
+  line-height: 1.5;
+  width: 100%;
+  height: 100vh;
+  overflow-x: hidden;
+}
+
+button,
+input,
+textarea {
+  font-family: "Poppins", sans-serif;
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+}
+
+a {
+  color: var(--textDark);
+  text-decoration: none;
+}
+
+.link {
+  color: var(--blue);
+  cursor: pointer;
+}
+
+.link:hover {
+  color: var(--blue);
+  text-decoration: underline;
+}
+
+.spin {
+  animation-name: spin;
+  animation-duration: 1000ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(-360deg);
+  }
 }
