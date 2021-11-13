@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useLocation, useParams, Link } from "react-router-dom";
-import Logo from "../../assets/Logo.svg";
+import Logo from "../../assets/Logo192.png";
 import { useOvermind } from "../../store";
 import { SelectButton } from "../../styles/SelectButton";
 import ProfileDropdown from "./ProfileDropdown";
@@ -15,7 +15,7 @@ const NavBarStyled = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0px 25px;
+  padding: 0px 1.25rem 0px 0.5rem;
   font-size: 0.9rem;
 
   .container {
@@ -24,11 +24,18 @@ const NavBarStyled = styled.div`
     align-items: center;
   }
 
+  .logo {
+    height: 5rem;
+    width: 18rem;
+    padding: 0;
+    margin: 0;
+  }
+
   .board-name {
-    font-size: 1.1rem;
+    font-size: 1.5rem;
     color: var(--textDark);
     text-transform: capitalize;
-    margin-left: 95px;
+    margin: auto;
   }
 
   .separator {
@@ -49,17 +56,15 @@ export default function NavBar() {
     <NavBarStyled>
       <div className="container">
         <Link to="/">
-          <img src={Logo} alt="thullo logo" />
+        <img src={Logo} alt="logo" className="logo"/>
         </Link>
-
+        <div className="separator"></div>
         {boardsState.boardLoading && location.pathname.includes("/b/") && (
           <Spinner style={{ marginLeft: "100px" }} />
         )}
         {!boardsState.boardLoading && location.pathname.includes("/b/") && (
           <>
-            <span className="board-name">{boardsState?.activeBoard?.name}</span>
-            <div className="separator"></div>
-            <Link to="/">
+          <Link to="/">
               <SelectButton>
                 <div className="icon">
                   <span className="material-icons">apps</span>
@@ -67,6 +72,9 @@ export default function NavBar() {
                 <span>All boards</span>
               </SelectButton>
             </Link>
+            <div className="separator"></div>
+            
+            <span className="board-name">{boardsState?.activeBoard?.name}</span>
           </>
         )}
       </div>

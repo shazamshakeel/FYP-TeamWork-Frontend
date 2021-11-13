@@ -193,6 +193,7 @@ export default function Profile() {
         }
       }
       setAvatarUploading(false);
+      console.log(res)
     } catch (err) {
       setAvatarUploading(false);
       //TODO: display message with error

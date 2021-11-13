@@ -19,9 +19,6 @@ const LoginStyled = styled.div`
     display: flex;
     justify-content: center;
     margin: 30px 0px;
-    img {
-      height: 60px;
-    }
   }
 
   .form-wrapper {
@@ -48,7 +45,7 @@ const LoginStyled = styled.div`
 
 export default function Login({ setFormHandler }) {
   let { inputs, handleChange } = useForm({
-    email: "guest@example.com",
+    email: "name@mail.com",
     password: "123456",
   });
 
@@ -65,11 +62,11 @@ export default function Login({ setFormHandler }) {
   return (
     <LoginStyled>
       <div className="logo-container">
-        <img src={Logo} alt="thullo brand logo" />
+        <img src={Logo} alt="logo" />
       </div>
 
       <div className="form-wrapper">
-        <h4>Log in to Thullo</h4>
+        <h4>Log in to TeamWork</h4>
 
         <form onSubmit={submitHandler}>
           <Input

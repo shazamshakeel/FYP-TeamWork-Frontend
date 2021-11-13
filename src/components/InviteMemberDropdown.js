@@ -237,7 +237,7 @@ export default function InviteMemberDropdown() {
               </p>
             )}
             {!loading && noUserFound && (
-              <p>Looks like that person isn't a Thullo user yet.</p>
+              <p>Looks like that person isn't a TeamWork's user yet.</p>
             )}
             {!loading && resultUser && (
               <div className="result-user">{resultUser.name}</div>

@@ -10,7 +10,7 @@ export const api = axios.create({
   },
 });
 
-const token = localStorage.getItem("thullo-user-token");
+const token = localStorage.getItem("TeamWork-user-token");
 
 if (token) {
   api.defaults.headers.common["Authorization"] = `Bearer ${token}`;

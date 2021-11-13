@@ -19,9 +19,6 @@ const RegisterStyled = styled.div`
     display: flex;
     justify-content: center;
     margin: 30px 0px;
-    img {
-      height: 60px;
-    }
   }
 
   .form-wrapper {
@@ -66,7 +63,7 @@ export default function Register({ setFormHandler }) {
   return (
     <RegisterStyled>
       <div className="logo-container">
-        <img src={Logo} alt="thullo brand logo" />
+        <img src={Logo} alt="logo" />
       </div>
 
       <div className="form-wrapper">

@@ -178,7 +178,7 @@ function Attachment({ attachment, onDelete }) {
     <AttachmentStyled>
       <div className="attachment-preview">
         {attachment.url !== "" && checkIfPic(attachment.name) ? (
-          <img src={attachment.url} />
+          <img src={attachment.url} alt="Attachment File"/>
         ) : (
           <span style={{ textTransform: "uppercase" }}>{`${
             attachment.name[0] + attachment.name[1]
