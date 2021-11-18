@@ -1,4 +1,4 @@
-const user = localStorage.getItem("thullo-user");
+const user = localStorage.getItem("TeamWork-user");
 
 export const state = {
   user: user ? JSON.parse(user) : null,

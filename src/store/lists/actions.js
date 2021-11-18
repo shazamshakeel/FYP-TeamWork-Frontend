@@ -78,7 +78,7 @@ export const updateListTitle = async ({ state }, payload) => {
       let listsCopy = [...state.lists.lists];
       listsCopy.map((l) => {
         if (l._id === id) {
-          l.title = title;
+         l.title = title;
         }
       });
       state.lists.lists = listsCopy;
@@ -98,7 +98,7 @@ export const addCardToList = async ({ state }, payload) => {
     if (res.data.success) {
       let listsCopy = [...state.lists.lists];
       listsCopy.forEach((list) => {
-        if (list._id == payload.listId) {
+        if (list._id === payload.listId) {
           console.log(2222, res.data.data);
           list.cards.push(res.data.data);
         }

@@ -1,7 +1,6 @@
 import React, { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import NoProfileImage from "../../assets/no-profile-image.png";
 import { useOvermind } from "../../store";
 import { useOutsideClick } from "../../hooks/useOutsideClick";
 import MemberAvatar from "../MemberAvatar";

@@ -67,8 +67,8 @@ export default function BoardCard({ board }) {
     <BoardCardStyled>
       <Link to={`/b/${_id}`}>
         <div className="cover-photo-inner">
-          {coverPhoto != "" ? (
-            <img src={coverPhoto} />
+          {coverPhoto !== "" ? (
+            <img src={coverPhoto} alt="" />
           ) : (
             <span>{boardInitials}</span>
           )}

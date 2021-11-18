@@ -6,7 +6,7 @@ export const updateProfile = async ({ state }, payload) => {
     const res = await api.put(`/auth`, payload);
     if (res.data.success) {
       state.user.user = res.data.data;
-      localStorage.setItem("thullo-user", JSON.stringify(res.data.data));
+      localStorage.setItem("TeamWork-user", JSON.stringify(res.data.data));
     }
     state.user.userLoading = false;
   } catch (err) {
@@ -15,8 +15,8 @@ export const updateProfile = async ({ state }, payload) => {
 };
 
 export const logOut = ({ state }) => {
-  localStorage.removeItem("thullo-user-token");
-  localStorage.removeItem("thullo-user");
+  localStorage.removeItem("TeamWork-user-token");
+  localStorage.removeItem("TeamWork-user");
   state.user.user = null;
   state.user.userLoading = false;
   state.user.userError = null;
@@ -33,13 +33,13 @@ export const loginUser = async ({ state, effects, actions }, payload) => {
 
     if (tokenRes.success) {
       state.user.userError = null;
-      localStorage.setItem("thullo-user-token", tokenRes.token);
+      localStorage.setItem("TeamWork-user-token", tokenRes.token);
       api.defaults.headers.common["Authorization"] = `Bearer ${tokenRes.token}`;
       const { data: userRes } = await api.get(`/auth/me`);
       if (userRes.success) {
         state.user.userLoading = false;
         state.user.userError = null;
-        localStorage.setItem("thullo-user", JSON.stringify(userRes.data));
+        localStorage.setItem("TeamWork-user", JSON.stringify(userRes.data));
         state.user.user = userRes.data;
       } else {
         state.user.userError = userRes.error;
@@ -67,13 +67,13 @@ export const registerNewUser = async ({ state, effects, actions }, payload) => {
     });
     if (tokenRes.success) {
       state.user.userError = null;
-      localStorage.setItem("thullo-user-token", tokenRes.token);
+      localStorage.setItem("TeamWork-user-token", tokenRes.token);
       api.defaults.headers.common["Authorization"] = `Bearer ${tokenRes.token}`;
       const { data: userRes } = await api.get(`/auth/me`);
       if (userRes.success) {
         state.user.userLoading = false;
         state.user.userError = null;
-        localStorage.setItem("thullo-user", JSON.stringify(userRes.data));
+        localStorage.setItem("TeamWork-user", JSON.stringify(userRes.data));
         state.user.user = userRes.data;
       } else {
         state.user.userError = userRes.error;
