@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useParams, useLocation } from "react-router-dom";
 import { useOvermind } from "../store";
-import BoardActionsBar from "../components/boardPageComponents/BoardActionsBar";
+import ProjectActionsBar from "../components/projectPageComponents/ProjectActionsBar";
 import Spinner from "../components/Spinner";
-import BardSlideMenu from "../components/boardPageComponents/BoardSlideMenu";
-import ListsContainer from "../components/boardPageComponents/ListsContainer";
-import CardModal from "../components/cardModal/CardModal";
+import BardSlideMenu from "../components/projectPageComponents/ProjectSlideMenu";
+import ListsContainer from "../components/projectPageComponents/ListsContainer";
+import TaskModal from "../components/taskModal/TaskModal";
 
-const BoardStyled = styled.div`
+const ProjectStyled = styled.div`
   padding-top: 24px;
   height: 100%;
   width: 100%;
@@ -22,26 +22,26 @@ function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
 
-export default function Board() {
+export default function Project() {
   const location = useLocation();
   const { id } = useParams();
   const query = useQuery();
 
   const [showMenu, setShowMenu] = useState(false);
-  const [cardModalId, setCardModalId] = useState(null);
+  const [taskModalId, setTaskModalId] = useState(null);
 
   const {
-    state: { boards: boardsState },
-    actions: { boards: boardsActions },
+    state: { projects: projectsState },
+    actions: { projects: projectsActions },
   } = useOvermind();
 
   useEffect(() => {
-    boardsActions.getActiveBoard(id);
+    projectsActions.getActiveProject(id);
   }, []);
 
   useEffect(() => {
-    let cardId = query.get("card");
-    setCardModalId(cardId);
+    let taskId = query.get("task");
+    setTaskModalId(taskId);
   }, [location.search]);
 
   function toggleMenuHandler() {
@@ -49,16 +49,16 @@ export default function Board() {
   }
 
   return (
-    <BoardStyled>
-      {boardsState.boardLoading && (
+    <ProjectStyled>
+      {projectsState.projectLoading && (
         <div style={{ textAlign: "center" }}>
           <Spinner />
         </div>
       )}
-      {!boardsState.boardLoading && (
+      {!projectsState.projectLoading && (
         <>
-          <BoardActionsBar
-            board={boardsState.activeBoard}
+          <ProjectActionsBar
+            project={projectsState.activeProject}
             toggleMenu={toggleMenuHandler}
           />
 
@@ -66,13 +66,13 @@ export default function Board() {
         </>
       )}
 
-      {cardModalId && <CardModal cardId={cardModalId} />}
+      {taskModalId && <TaskModal taskId={taskModalId} />}
 
       <BardSlideMenu
-        board={boardsState.activeBoard}
+        project={projectsState.activeProject}
         show={showMenu}
         toggleMenu={toggleMenuHandler}
       />
-    </BoardStyled>
+    </ProjectStyled>
   );
 }

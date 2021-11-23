@@ -176,7 +176,7 @@ export default function ListTitle({ title = "", listId }) {
   }, [title]);
 
   function updateListTitleHandler() {
-    //ajax to add new card
+    //ajax to add new task
     listsActions.updateListTitle({ id: listId, title: newListTitle });
     closeForm();
   }

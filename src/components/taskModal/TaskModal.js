@@ -5,7 +5,7 @@ import { api } from "../../utils/api";
 import Spinner from "../Spinner";
 import { useOvermind } from "../../store";
 
-import CardTitle from "./CardTitle";
+import TaskTitle from "./TaskTitle";
 import DescriptionBox from "../DescriptionBox";
 import UnsplashSearch from "../UnsplashSearch";
 import AssignMember from "./AssignMember";
@@ -13,7 +13,7 @@ import LabelSelect from "../LabelSelect";
 import Comments from "./Comments";
 import Attachments from "./Attachments";
 
-const CardModalStyled = styled.div`
+const TaskModalStyled = styled.div`
   position: fixed;
   top: 0px;
   left: 0px;
@@ -26,7 +26,7 @@ const CardModalStyled = styled.div`
   align-items: center;
   overflow: auto;
 
-  .card-modal {
+  .task-modal {
     width: 660px;
     padding: 24px;
     margin-top: 70px;
@@ -92,14 +92,14 @@ const CardModalStyled = styled.div`
   }
 `;
 
-export default function CardModal({ cardId }) {
+export default function TaskModal({ taskId }) {
   const {
     actions: { lists: listsActions },
     state: { user: userState },
   } = useOvermind();
 
-  const [cardState, setCardState] = useState(null);
-  const [cardLoading, setCardLoading] = useState(true);
+  const [taskState, setTaskState] = useState(null);
+  const [taskLoading, setTaskLoading] = useState(true);
   const location = useLocation();
   const history = useHistory();
 
@@ -109,29 +109,29 @@ export default function CardModal({ cardId }) {
   //////
 
   useEffect(() => {
-    async function getCardData() {
-      if (!cardId) return;
+    async function getTaskData() {
+      if (!taskId) return;
       try {
-        const res = await api.get(`/cards/${cardId}`);
+        const res = await api.get(`/tasks/${taskId}`);
 
         if (res.data.success) {
           res.data.data.comments.sort(function (a, b) {
             return new Date(b.createdAt) - new Date(a.createdAt);
           });
-          setCardState(res.data.data);
-          setCardLoading(false);
+          setTaskState(res.data.data);
+          setTaskLoading(false);
         } else {
           //TODO: Handle unsuccessful response
           console.log("Handle unsuccessful response");
-          setCardLoading(false);
+          setTaskLoading(false);
         }
       } catch (err) {
         console.log(err);
-        setCardLoading(false);
+        setTaskLoading(false);
       }
     }
-    getCardData();
-  }, [cardId]);
+    getTaskData();
+  }, [taskId]);
 
   function closeModal() {
     history.push(location.pathname);
@@ -151,12 +151,12 @@ export default function CardModal({ cardId }) {
 
   function addMemberHandler(member) {
     updateAjaxCall({
-      members: [...cardState.members.map((m) => m._id), member._id],
+      members: [...taskState.members.map((m) => m._id), member._id],
     });
   }
 
   function removeMemberHandler(memberId) {
-    let newMembers = cardState.members.filter(
+    let newMembers = taskState.members.filter(
       (member) => member._id !== memberId
     );
 
@@ -167,12 +167,12 @@ export default function CardModal({ cardId }) {
 
   function addLabelHandler(val) {
     updateAjaxCall({
-      labels: [...cardState.labels, val],
+      labels: [...taskState.labels, val],
     });
   }
 
   function removeLabelHandler(id) {
-    let nweLabels = cardState.labels.filter((label) => label._id !== id);
+    let nweLabels = taskState.labels.filter((label) => label._id !== id);
 
     updateAjaxCall({
       labels: nweLabels,
@@ -183,7 +183,7 @@ export default function CardModal({ cardId }) {
     let newComment = {
       text,
       createdBy: userState.user._id,
-      cardId: cardState._id,
+      taskId: taskState._id,
     };
 
     try {
@@ -193,7 +193,7 @@ export default function CardModal({ cardId }) {
         let newComment = res.data.data;
         updateAjaxCall(
           {
-            comments: [...cardState.comments.map((c) => c._id), newComment._id],
+            comments: [...taskState.comments.map((c) => c._id), newComment._id],
           },
           () => {
             setAddingNewComment(false);
@@ -220,15 +220,15 @@ export default function CardModal({ cardId }) {
       if (res.data.success) {
         let updatedComment = res.data.data;
         console.log(updatedComment);
-        let cardStateCopy = { ...cardState };
-        let newComments = cardStateCopy.comments.map((comment) => {
+        let taskStateCopy = { ...taskState };
+        let newComments = taskStateCopy.comments.map((comment) => {
           if (comment._id === updatedComment._id) {
             return updatedComment;
           }
           return comment;
         });
-        cardStateCopy.comments = newComments;
-        setCardState(cardStateCopy);
+        taskStateCopy.comments = newComments;
+        setTaskState(taskStateCopy);
         setUpdatingComment(false);
       } else {
         //TODO: handle notification for unsuccessful update
@@ -248,16 +248,16 @@ export default function CardModal({ cardId }) {
       if (res.data.success) {
         let updatedComment = res.data.data;
 
-        let cardStateCopy = { ...cardState };
-        let newComments = cardStateCopy.comments.filter((comment) => {
+        let taskStateCopy = { ...taskState };
+        let newComments = taskStateCopy.comments.filter((comment) => {
           if (comment._id !== id) {
             return comment;
           }
         });
-        cardStateCopy.comments = newComments;
+        taskStateCopy.comments = newComments;
 
         updateAjaxCall({ comments: [...newComments.map((c) => c._id)] }, () => {
-          setCardState(cardStateCopy);
+          setTaskState(taskStateCopy);
         });
       } else {
         //TODO: handle notification for unsuccessful update
@@ -271,12 +271,12 @@ export default function CardModal({ cardId }) {
 
   function uploadAttachmentHandler(attachment) {
     updateAjaxCall({
-      attachments: [...cardState.attachments, attachment],
+      attachments: [...taskState.attachments, attachment],
     });
   }
 
   function deleteAttachmentHandler(id) {
-    let newAttachments = cardState.attachments.filter((att) => att._id !== id);
+    let newAttachments = taskState.attachments.filter((att) => att._id !== id);
     updateAjaxCall({
       attachments: newAttachments,
     });
@@ -284,46 +284,46 @@ export default function CardModal({ cardId }) {
 
   async function updateAjaxCall(props, cb) {
     try {
-      const res = await api.put(`/cards/${cardState._id}`, props);
+      const res = await api.put(`/tasks/${taskState._id}`, props);
       if (res.data.success) {
-        let updatedCard = res.data.data;
-        updatedCard.comments.sort(function (a, b) {
+        let updatedTask = res.data.data;
+        updatedTask.comments.sort(function (a, b) {
           return new Date(b.createdAt) - new Date(a.createdAt);
         });
-        setCardState(updatedCard);
-        listsActions.updateCardInList({
-          listId: updatedCard.listId._id,
-          updatedCard: updatedCard,
+        setTaskState(updatedTask);
+        listsActions.updateTaskInList({
+          listId: updatedTask.listId._id,
+          updatedTask: updatedTask,
         });
         if (cb) {
           cb();
         }
       } else {
         //TODO: handle notification for unsuccessful update
-        console.log("1 could not update card");
+        console.log("1 could not update task");
       }
     } catch (err) {
       //TODO: handle notification for unsuccessful update
-      console.log("2 could not update card");
+      console.log("2 could not update task");
     }
   }
 
-  //TODO: Handle if card does not exist
-  if (!cardState && !cardLoading) {
+  //TODO: Handle if task does not exist
+  if (!taskState && !taskLoading) {
     return (
-      <CardModalStyled onClick={closeModal}>
-        <div className="card-modal" onClick={(e) => e.stopPropagation()}>
-          <h4>Card not found</h4>
+      <TaskModalStyled onClick={closeModal}>
+        <div className="task-modal" onClick={(e) => e.stopPropagation()}>
+          <h4>Task not found</h4>
         </div>
-      </CardModalStyled>
+      </TaskModalStyled>
     );
   }
 
-  if (cardLoading) {
+  if (taskLoading) {
     return (
-      <CardModalStyled onClick={closeModal}>
+      <TaskModalStyled onClick={closeModal}>
         <div
-          className="card-modal"
+          className="task-modal"
           style={{
             display: "flex",
             alignItems: "center",
@@ -333,43 +333,43 @@ export default function CardModal({ cardId }) {
         >
           <Spinner />
         </div>
-      </CardModalStyled>
+      </TaskModalStyled>
     );
   }
 
   return (
-    <CardModalStyled onClick={closeModal}>
-      <div className="card-modal" onClick={(e) => e.stopPropagation()}>
+    <TaskModalStyled onClick={closeModal}>
+      <div className="task-modal" onClick={(e) => e.stopPropagation()}>
         <div className="close-btn" onClick={closeModal}>
           <span className="material-icons">close</span>
         </div>
 
-        {cardState.coverPhoto !== "" && (
+        {taskState.coverPhoto !== "" && (
           <div className="cover-image">
-            <img src={cardState.coverPhoto} />
+            <img src={taskState.coverPhoto} />
           </div>
         )}
 
         <div className="main-container">
           <div className="main">
-            <CardTitle
-              title={cardState.title}
-              listTitle={cardState.listId.title}
+            <TaskTitle
+              title={taskState.title}
+              listTitle={taskState.listId.title}
               onTitleChange={onTitleChangeHandler}
             />
             <DescriptionBox
-              description={cardState.description}
+              description={taskState.description}
               onSave={descriptionChangeHandler}
             />
 
             <Attachments
               onUploadedAttachment={uploadAttachmentHandler}
-              attachments={cardState.attachments}
+              attachments={taskState.attachments}
               onDelete={deleteAttachmentHandler}
             />
 
             <Comments
-              comments={cardState.comments}
+              comments={taskState.comments}
               onAddComment={addCommentHandler}
               onUpdateComment={updateCommentHandler}
               addingNewComment={addingNewComment}
@@ -392,13 +392,13 @@ export default function CardModal({ cardId }) {
 
               <LabelSelect
                 btnStyle={{ width: "100%" }}
-                labels={cardState.labels}
+                labels={taskState.labels}
                 onAddLabel={addLabelHandler}
                 onRemoveLabel={removeLabelHandler}
               />
 
               <AssignMember
-                members={cardState.members}
+                members={taskState.members}
                 addMember={addMemberHandler}
                 removeMember={removeMemberHandler}
               />
@@ -406,6 +406,6 @@ export default function CardModal({ cardId }) {
           </aside>
         </div>
       </div>
-    </CardModalStyled>
+    </TaskModalStyled>
   );
 }

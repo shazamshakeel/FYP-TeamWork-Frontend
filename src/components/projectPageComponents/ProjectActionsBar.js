@@ -5,7 +5,7 @@ import MembersBar from "../MembersBar";
 import { SelectButton } from "../../styles/SelectButton";
 import { useOvermind } from "../../store";
 
-const BoardActionsBarStyled = styled.div`
+const ProjectActionsBarStyled = styled.div`
   width: 100%;
   height: 40px;
   padding: 0px 24px;
@@ -13,19 +13,19 @@ const BoardActionsBarStyled = styled.div`
   align-items: center;
 `;
 
-export default function BoardActionsBar({ board, toggleMenu }) {
+export default function ProjectActionsBar({ project, toggleMenu }) {
   let members = [];
-  if (board) {
-    members = [board.createdBy, ...board.members];
+  if (project) {
+    members = [project.createdBy, ...project.members];
   }
 
   const {
-    actions: { boards: boardsActions },
+    actions: { projects: projectsActions },
   } = useOvermind();
 
   function setVisibilityHandler(val) {
     console.log(val);
-    boardsActions.updateBoard({
+    projectsActions.updateProject({
       updatedProps: {
         visibility: val,
       },
@@ -40,9 +40,9 @@ export default function BoardActionsBar({ board, toggleMenu }) {
   }
 
   return (
-    <BoardActionsBarStyled>
+    <ProjectActionsBarStyled>
       <VisibilitySelect
-        visibility={board?.visibility ? board.visibility : "Public"}
+        visibility={project?.visibility ? project.visibility : "Public"}
         changeVisibility={setVisibilityHandler}
       />
       <MembersBar members={members} />
@@ -52,6 +52,6 @@ export default function BoardActionsBar({ board, toggleMenu }) {
         </div>
         <span>Show Menu</span>
       </SelectButton>
-    </BoardActionsBarStyled>
+    </ProjectActionsBarStyled>
   );
 }

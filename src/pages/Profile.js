@@ -145,12 +145,12 @@ const ProfileStyled = styled.div`
 export default function Profile() {
   const {
     state: { user: userState },
-    actions: { boards: boardActions, user: userActions },
+    actions: { projects: projectActions, user: userActions },
   } = useOvermind();
 
   useEffect(() => {
-    boardActions.resetActiveBoard();
-    boardActions.getBoards();
+    projectActions.resetActiveProject();
+    projectActions.getProjects();
   }, []);
 
   const [formState, setFormState] = useState({

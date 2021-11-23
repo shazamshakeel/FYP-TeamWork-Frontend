@@ -19,7 +19,7 @@ const transitionStyles = {
   entered: { right: "0px" },
 };
 
-const BoardSlideMenuStyled = styled.div`
+const ProjectSlideMenuStyled = styled.div`
   height: 100%;
   width: 377px;
   overflow: auto;
@@ -135,9 +135,9 @@ const BoardSlideMenuStyled = styled.div`
   }
 `;
 
-export default function BoardSlideMenu({ board, show, toggleMenu }) {
+export default function ProjectSlideMenu({ project, show, toggleMenu }) {
   const {
-    actions: { boards: boardsActions },
+    actions: { projects: projectsActions },
     state: { user: userState },
   } = useOvermind();
 
@@ -153,7 +153,7 @@ export default function BoardSlideMenu({ board, show, toggleMenu }) {
 
   function descriptionUpdateHandler(val) {
     console.log(val);
-    boardsActions.updateBoard({
+    projectsActions.updateProject({
       updatedProps: {
         description: val,
       },
@@ -168,8 +168,8 @@ export default function BoardSlideMenu({ board, show, toggleMenu }) {
   }
 
   function removeMember(id) {
-    let newMembers = board.members.filter((member) => member._id !== id);
-    boardsActions.updateBoard({
+    let newMembers = project.members.filter((member) => member._id !== id);
+    projectsActions.updateProject({
       updatedProps: {
         members: newMembers,
       },
@@ -186,12 +186,12 @@ export default function BoardSlideMenu({ board, show, toggleMenu }) {
   return (
     <Transition in={show} timeout={duration} unmountOnExit>
       {(state) => (
-        <BoardSlideMenuStyled
+        <ProjectSlideMenuStyled
           style={{ ...defaultStyle, ...transitionStyles[state] }}
           ref={ref}
         >
           <div className="header">
-            <span className="header-name">{board.name}</span>
+            <span className="header-name">{project.name}</span>
             <span onClick={toggleMenu} className="material-icons">
               close
             </span>
@@ -203,18 +203,18 @@ export default function BoardSlideMenu({ board, show, toggleMenu }) {
               <span>Made by</span>
             </div>
             <div className="created-by-profile">
-              <MemberAvatar member={board.createdBy} />
+              <MemberAvatar member={project.createdBy} />
               <div className="created-by-name-date">
-                <span className="created-by-name">{board.createdBy.name}</span>
+                <span className="created-by-name">{project.createdBy.name}</span>
                 <span className="created-by-date">
-                  on {parseDate(board.createdAt)}
+                  on {parseDate(project.createdAt)}
                 </span>
               </div>
             </div>
           </div>
 
           <DescriptionBox
-            description={board.description}
+            description={project.description}
             onSave={descriptionUpdateHandler}
           />
 
@@ -225,13 +225,13 @@ export default function BoardSlideMenu({ board, show, toggleMenu }) {
             </div>
             <div>
               <div className="member">
-                <Member member={board.createdBy} />
+                <Member member={project.createdBy} />
                 <span className="admin-btn">Admin</span>
               </div>
-              {board.members.map((member) => (
+              {project.members.map((member) => (
                 <div className="member" key={member._id}>
                   <Member member={member} />
-                  {userState.user._id === board.createdBy._id && (
+                  {userState.user._id === project.createdBy._id && (
                     <button
                       onClick={() => removeMember(member._id)}
                       className="remove-btn"
@@ -243,7 +243,7 @@ export default function BoardSlideMenu({ board, show, toggleMenu }) {
               ))}
             </div>
           </div>
-        </BoardSlideMenuStyled>
+        </ProjectSlideMenuStyled>
       )}
     </Transition>
   );

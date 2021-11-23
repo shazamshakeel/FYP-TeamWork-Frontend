@@ -31,7 +31,7 @@ const NavBarStyled = styled.div`
     margin: 0;
   }
 
-  .board-name {
+  .project-name {
     font-size: 1.5rem;
     color: var(--textDark);
     text-transform: capitalize;
@@ -49,7 +49,7 @@ const NavBarStyled = styled.div`
 export default function NavBar() {
   const location = useLocation();
   const {
-    state: { boards: boardsState },
+    state: { projects: projectsState },
   } = useOvermind();
 
   return (
@@ -59,27 +59,27 @@ export default function NavBar() {
         <img src={Logo} alt="logo" className="logo"/>
         </Link>
         <div className="separator"></div>
-        {boardsState.boardLoading && location.pathname.includes("/b/") && (
+        {projectsState.projectLoading && location.pathname.includes("/b/") && (
           <Spinner style={{ marginLeft: "100px" }} />
         )}
-        {!boardsState.boardLoading && location.pathname.includes("/b/") && (
+        {!projectsState.projectLoading && location.pathname.includes("/b/") && (
           <>
           <Link to="/">
               <SelectButton>
                 <div className="icon">
                   <span className="material-icons">apps</span>
                 </div>
-                <span>All boards</span>
+                <span>All projects</span>
               </SelectButton>
             </Link>
             <div className="separator"></div>
             
-            <span className="board-name">{boardsState?.activeBoard?.name}</span>
+            <span className="project-name">{projectsState?.activeProject?.name}</span>
           </>
         )}
       </div>
       <div className="container">
-        {/* {board && <input type="text" placeholder="Search" />} */}
+        {/* {project && <input type="text" placeholder="Search" />} */}
         <ProfileDropdown />
       </div>
     </NavBarStyled>

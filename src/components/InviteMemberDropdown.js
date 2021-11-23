@@ -121,7 +121,7 @@ const SelectStyled = styled.div`
 
 export default function InviteMemberDropdown() {
   const {
-    actions: { boards: boardsActions },
+    actions: { projects: projectsActions },
   } = useOvermind();
 
   const [showOptions, setShowOptions] = useState(false);
@@ -189,13 +189,13 @@ export default function InviteMemberDropdown() {
 
   function addMember() {
     setLoading(true);
-    boardsActions.addMemberToBoard({
+    projectsActions.addMemberToProject({
       newMember: resultUser,
       cb: (code) => {
         setLoading(false);
         if (code) {
           if (code === 1) {
-            alert("User already member of board");
+            alert("User already member of project");
           }
           if (code === 2) {
             alert("Network error");
@@ -215,7 +215,7 @@ export default function InviteMemberDropdown() {
       </div>
       {showOptions && (
         <div className="options">
-          <h4>Invite to board</h4>
+          <h4>Invite to project</h4>
           <p>Search users by email address</p>
           <div className="search-input">
             <input

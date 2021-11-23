@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { getInitials } from "../utils";
 
-const BoardCardMemberStyled = styled.div`
+const ProjectCardMemberStyled = styled.div`
   width: 32px;
   height: 32px;
   border-radius: 8px;
@@ -20,14 +20,14 @@ const BoardCardMemberStyled = styled.div`
   }
 `;
 
-export default function BoardCardMember({ member }) {
+export default function ProjectCardMember({ member }) {
   const { name, photo } = member;
 
   const initials = getInitials(name);
 
   return (
-    <BoardCardMemberStyled>
+    <ProjectCardMemberStyled>
       {photo !== "" ? <img src={photo} alt="" /> : <span>{initials}</span>}
-    </BoardCardMemberStyled>
+    </ProjectCardMemberStyled>
   );
 }

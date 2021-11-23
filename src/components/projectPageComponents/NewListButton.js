@@ -9,7 +9,7 @@ const NewListButtonStyled = styled.div`
   margin: 0px 10px;
   position: relative;
 
-  .add-card-action {
+  .add-task-action {
     width: 100%;
     height: 32px;
     border-radius: 8px;
@@ -57,7 +57,7 @@ const NewListButtonStyled = styled.div`
   }
 `;
 
-export default function NewListButton({ boardId }) {
+export default function NewListButton({ projectId }) {
   const [showForm, setShowForm] = useState(false);
   const [newListName, setNewListName] = useState("");
 
@@ -81,7 +81,7 @@ export default function NewListButton({ boardId }) {
     console.log(newListName, newPosition);
     listsActions.createNewList({
       title: newListName,
-      boardId,
+      projectId,
       position: newPosition,
     });
     closeForm();
@@ -94,7 +94,7 @@ export default function NewListButton({ boardId }) {
 
   return (
     <NewListButtonStyled>
-      <div className="add-card-action" onClick={() => setShowForm(true)}>
+      <div className="add-task-action" onClick={() => setShowForm(true)}>
         <span>Add another list</span>
         <span className="material-icons">add</span>
       </div>

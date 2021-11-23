@@ -95,7 +95,7 @@ export default function InviteMemberDropdown({
       {showOptions && (
         <div className="options">
           <h4>Visibility</h4>
-          <p>Choose who can see this board.</p>
+          <p>Choose who can see this project.</p>
 
           <div
             className="option"
@@ -116,7 +116,7 @@ export default function InviteMemberDropdown({
               <span className="material-icons">lock</span>
               <span>Private</span>
             </div>
-            <p>Only board members can see this</p>
+            <p>Only project members can see this</p>
           </div>
         </div>
       )}

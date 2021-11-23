@@ -2,8 +2,8 @@ import React from "react";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import styled from "styled-components";
 import NavBar from "../components/navBar/NavBar";
-import Boards from "./Boards";
-import Board from "./Board";
+import Projects from "./Projects";
+import Project from "./Project";
 import Profile from "./Profile";
 
 const WrapperStyled = styled.div`
@@ -28,13 +28,13 @@ const ProtectedRoutes = () => {
         <div className="pages-container">
           <Switch>
             <Route exact path="/">
-              <Boards />
+              <Projects />
             </Route>
             <Route exact path="/profile">
               <Profile />
             </Route>
             <Route exact path="/b/:id">
-              <Board />
+              <Project />
             </Route>
           </Switch>
         </div>

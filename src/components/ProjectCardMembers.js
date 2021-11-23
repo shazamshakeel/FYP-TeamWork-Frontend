@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import BoardCardMember from "./BoardCardMember";
+import ProjectCardMember from "./ProjectCardMember";
 
-const BoardCardMembersStyled = styled.div`
+const ProjectCardMembersStyled = styled.div`
   margin-top: 10px;
   display: flex;
   align-items: center;
@@ -13,14 +13,14 @@ const BoardCardMembersStyled = styled.div`
   }
 `;
 
-export default function BoardCardMembers({ members }) {
+export default function ProjectCardMembers({ members }) {
   let numOfMembersToShow = 3;
 
   return (
-    <BoardCardMembersStyled>
+    <ProjectCardMembersStyled>
       {members.map((m, i) => {
         if (i < numOfMembersToShow) {
-          return <BoardCardMember member={m} key={i} />;
+          return <ProjectCardMember member={m} key={i} />;
         }
       })}
 
@@ -29,6 +29,6 @@ export default function BoardCardMembers({ members }) {
           + {members.length - numOfMembersToShow} others
         </span>
       )}
-    </BoardCardMembersStyled>
+    </ProjectCardMembersStyled>
   );
 }

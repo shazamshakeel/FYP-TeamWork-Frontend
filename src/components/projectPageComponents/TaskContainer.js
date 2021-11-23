@@ -1,10 +1,10 @@
 import React from "react";
 import styled from "styled-components";
-import Card from "./Card";
-import NewCardButton from "./NewCardButton";
+import Task from "./Task";
+import NewTaskButton from "./NewTaskButton";
 import ListTitle from "./ListTitle";
 
-const CardContainerStyled = styled.div`
+const TaskContainerStyled = styled.div`
   min-width: 245px;
   /* min-height: 100px; */
   height: 100%;
@@ -14,16 +14,16 @@ const CardContainerStyled = styled.div`
   margin: 0px 10px;
 `;
 
-export default function CardContainer({ list }) {
+export default function TaskContainer({ list }) {
   return (
-    <CardContainerStyled>
+    <TaskContainerStyled>
       <ListTitle title={list.title} listId={list._id} />
       <div>
-        {list.cards.map((card, index) => (
-          <Card card={card} key={card._id} index={card.position} />
+        {list.tasks.map((task, index) => (
+          <Task task={task} key={task._id} index={task.position} />
         ))}
       </div>
-      <NewCardButton listId={list._id} />
-    </CardContainerStyled>
+      <NewTaskButton listId={list._id} />
+    </TaskContainerStyled>
   );
 }

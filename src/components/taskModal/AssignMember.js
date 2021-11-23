@@ -178,7 +178,7 @@ function MemberToAssign({ member, addMember }) {
 
 export default function AssignMember({ members, addMember, removeMember }) {
   const {
-    state: { boards: boardsState, user: userState },
+    state: { projects: projectsState, user: userState },
   } = useOvermind();
 
   const [showOptions, setShowOptions] = useState(false);
@@ -191,11 +191,11 @@ export default function AssignMember({ members, addMember, removeMember }) {
     let membersIds = members.map((m) => m._id);
 
     let allMembers = [
-      boardsState.activeBoard.createdBy,
-      ...boardsState.activeBoard.members,
+      projectsState.activeProject.createdBy,
+      ...projectsState.activeProject.members,
     ];
 
-    let boardMembers = allMembers.filter((m) => {
+    let projectMembers = allMembers.filter((m) => {
       if (!membersIds.includes(m._id)) {
         return m;
       }
@@ -203,12 +203,12 @@ export default function AssignMember({ members, addMember, removeMember }) {
 
     if (filterString !== "") {
       setFilteredMembers(
-        boardMembers.filter((m) =>
+        projectMembers.filter((m) =>
           m.name.toLowerCase().includes(filterString.trim().toLowerCase())
         )
       );
     } else {
-      setFilteredMembers(boardMembers);
+      setFilteredMembers(projectMembers);
     }
   }, [members, filterString]);
 
@@ -262,7 +262,7 @@ export default function AssignMember({ members, addMember, removeMember }) {
       {showOptions && (
         <div className="options">
           <h4>Members</h4>
-          <p>Assign members to this card</p>
+          <p>Assign members to this task</p>
           <div className="search-input">
             <input
               type="text"

@@ -2,10 +2,10 @@ import React from "react";
 import styled from "styled-components";
 import { Draggable } from "react-beautiful-dnd";
 import { Link, useLocation } from "react-router-dom";
-import BoardCardMembers from "../BoardCardMembers";
+import ProjectCardMembers from "../ProjectCardMembers";
 import LabelPill from "../LabelPill";
 
-const CardStyled = styled.div`
+const TaskStyled = styled.div`
   width: 245px;
   min-height: 50px;
   border-radius: 8px;
@@ -13,7 +13,7 @@ const CardStyled = styled.div`
   padding: 15px;
   background: var(--white);
 
-  .card-labels {
+  .task-labels {
     width: 100%auto;
     display: flex;
     flex-wrap: wrap;
@@ -21,7 +21,7 @@ const CardStyled = styled.div`
     margin: 10px 0px;
   }
 
-  .card-cover-container {
+  .task-cover-container {
     width: 100%;
     height: 130px;
     background: var(--bgGrey);
@@ -38,53 +38,53 @@ const CardStyled = styled.div`
     }
   }
 
-  .card-footer {
+  .task-footer {
     display: flex;
   }
 `;
 
-export default function Card({ card, index }) {
+export default function Task({ task, index }) {
   const location = useLocation();
 
-  function openCard() {
+  function openTask() {
     console.log(location);
-    alert(card._id);
+    alert(task._id);
   }
 
   return (
-    <Draggable draggableId={card._id} index={card.position} onClick={openCard}>
+    <Draggable draggableId={task._id} index={task.position} onClick={openTask}>
       {(provided) => (
-        <CardStyled
+        <TaskStyled
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
         >
-          {card.coverPhoto !== "" && (
-            <Link to={`${location.pathname}?card=${card._id}`}>
-              <div className="card-cover-container">
-                <img src={card.coverPhoto} />
+          {task.coverPhoto !== "" && (
+            <Link to={`${location.pathname}?task=${task._id}`}>
+              <div className="task-cover-container">
+                <img src={task.coverPhoto} alt="task cover"/>
               </div>
             </Link>
           )}
 
-          <Link to={`${location.pathname}?card=${card._id}`}>{card.title}</Link>
-          {card.labels.length > 0 && (
-            <div className="card-labels">
-              {card.labels.map((label) => (
+          <Link to={`${location.pathname}?task=${task._id}`}>{task.title}</Link>
+          {task.labels.length > 0 && (
+            <div className="task-labels">
+              {task.labels.map((label) => (
                 <LabelPill label={label} key={label._id} />
               ))}
             </div>
           )}
 
-          <div className="card-footer">
+          <div className="task-footer">
             <div>
-              <BoardCardMembers members={card.members} />
+              <ProjectCardMembers members={task.members} />
             </div>
             <div>
               <div>{/* TODO: comments and attachment number go here */}</div>
             </div>
           </div>
-        </CardStyled>
+        </TaskStyled>
       )}
     </Draggable>
   );

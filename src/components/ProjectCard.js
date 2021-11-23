@@ -2,10 +2,10 @@ import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { getInitials } from "../utils";
-import BoardCardMember from "./BoardCardMember";
-import BoardCardMembers from "./BoardCardMembers";
+import ProjectCardMember from "./ProjectCardMember";
+import ProjectCardMembers from "./ProjectCardMembers";
 
-const BoardCardStyled = styled.div`
+const ProjectCardStyled = styled.div`
   width: 243px;
   height: 243px;
   border-radius: 12px;
@@ -31,7 +31,7 @@ const BoardCardStyled = styled.div`
     }
   }
 
-  .board-name {
+  .project-name {
     text-transform: capitalize;
     a {
       color: var(--textDark);
@@ -43,7 +43,7 @@ const BoardCardStyled = styled.div`
     }
   }
 
-  .board-card-members {
+  .project-card-members {
     margin-top: 10px;
     display: flex;
     align-items: center;
@@ -56,30 +56,30 @@ const BoardCardStyled = styled.div`
   }
 `;
 
-export default function BoardCard({ board }) {
-  const { name, createdBy, members, _id, coverPhoto } = board;
+export default function ProjectCard({ project }) {
+  const { name, createdBy, members, _id, coverPhoto } = project;
 
-  const boardInitials = getInitials(name);
+  const projectInitials = getInitials(name);
 
   let allMembers = [createdBy, ...members];
 
   return (
-    <BoardCardStyled>
+    <ProjectCardStyled>
       <Link to={`/b/${_id}`}>
         <div className="cover-photo-inner">
           {coverPhoto !== "" ? (
             <img src={coverPhoto} alt="" />
           ) : (
-            <span>{boardInitials}</span>
+            <span>{projectInitials}</span>
           )}
         </div>
       </Link>
 
-      <div className="board-name">
+      <div className="project-name">
         <Link to={`/b/${_id}`}>{name}</Link>
       </div>
 
-      <BoardCardMembers members={allMembers} />
-    </BoardCardStyled>
+      <ProjectCardMembers members={allMembers} />
+    </ProjectCardStyled>
   );
 }

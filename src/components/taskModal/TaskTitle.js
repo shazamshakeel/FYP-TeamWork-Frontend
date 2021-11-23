@@ -2,10 +2,10 @@ import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import { useOutsideClick } from "../../hooks/useOutsideClick";
 
-const CardTitleStyled = styled.div`
+const TaskTitleStyled = styled.div`
   margin: 24px 0px;
 
-  .card-title-input {
+  .task-title-input {
     border: none;
     font-size: 1rem;
     color: var(--textBlack);
@@ -24,7 +24,7 @@ const CardTitleStyled = styled.div`
   }
 `;
 
-export default function CardTitle({ title, listTitle, onTitleChange }) {
+export default function TaskTitle({ title, listTitle, onTitleChange }) {
   const [showInput, setShowInput] = useState(false);
 
   const ref = useRef();
@@ -42,12 +42,12 @@ export default function CardTitle({ title, listTitle, onTitleChange }) {
   }
 
   return (
-    <CardTitleStyled>
+    <TaskTitleStyled>
       {!showInput && <p onClick={focusInput}>{title}</p>}
       {showInput && (
         <div>
           <input
-            className="card-title-input"
+            className="task-title-input"
             defaultValue={title}
             ref={ref}
             type="text"
@@ -57,6 +57,6 @@ export default function CardTitle({ title, listTitle, onTitleChange }) {
       <span>
         in list <strong>{listTitle}</strong>
       </span>
-    </CardTitleStyled>
+    </TaskTitleStyled>
   );
 }

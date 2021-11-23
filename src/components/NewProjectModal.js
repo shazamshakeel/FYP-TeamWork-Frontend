@@ -10,7 +10,7 @@ import VisibilitySelect from "./VisibilitySelect";
 
 import UnsplashSearch from "./UnsplashSearch";
 
-const NewBoardModalStyled = styled.div`
+const NewProjectModalStyled = styled.div`
   width: 310px;
   height: 290px;
   padding: 24px;
@@ -83,19 +83,19 @@ const SelectStyled = styled.div`
   }
 `;
 
-export default function NewBoardModal({ show, closeModal }) {
-  const [boardName, setBoardName] = useState("");
+export default function NewProjectModal({ show, closeModal }) {
+  const [projectName, setProjectName] = useState("");
   const [coverPhoto, setCoverPhoto] = useState("");
   const [coverPhotoLoading, setCoverPhotoLoading] = useState(false);
   const [visibility, setVisibility] = useState("public");
 
   const {
-    actions: { boards: boardActions },
-    state: { boards: boardsState },
+    actions: { projects: projectActions },
+    state: { projects: projectsState },
   } = useOvermind();
 
   useEffect(() => {
-    setBoardName("");
+    setProjectName("");
     setVisibility("public");
   }, [show]);
 
@@ -116,13 +116,13 @@ export default function NewBoardModal({ show, closeModal }) {
     if (show) getRandomPhoto();
   }, [show]);
 
-  const { boardsLoading, boardsError } = boardsState;
+  const { projectsLoading, projectsError } = projectsState;
 
   function submitHandler(e) {
     e.preventDefault();
-    boardActions.addBoard({
+    projectActions.addProject({
       form: {
-        name: boardName,
+        name: projectName,
         coverPhoto,
         visibility,
       },
@@ -140,7 +140,7 @@ export default function NewBoardModal({ show, closeModal }) {
 
   return (
     <Modal show={show} onClose={closeModal}>
-      <NewBoardModalStyled>
+      <NewProjectModalStyled>
         <form onSubmit={submitHandler}>
           <div className="close-btn" onClick={closeModal}>
             <span className="material-icons">close</span>
@@ -151,12 +151,12 @@ export default function NewBoardModal({ show, closeModal }) {
           <div className="row">
             <Input
               style={{ width: "100%" }}
-              placeholder="Add board title"
+              placeholder="Add project title"
               required={true}
               name="name"
-              value={boardName}
+              value={projectName}
               autocomplete="off"
-              onChange={(e) => setBoardName(e.target.value.toLowerCase())}
+              onChange={(e) => setProjectName(e.target.value.toLowerCase())}
             />
           </div>
           <div className="row space">
@@ -191,12 +191,12 @@ export default function NewBoardModal({ show, closeModal }) {
             >
               Cancel
             </Button>
-            <Button type="submit" disabled={boardsLoading}>
-              {boardsLoading ? <Spinner /> : "+ Create"}
+            <Button type="submit" disabled={projectsLoading}>
+              {projectsLoading ? <Spinner /> : "+ Create"}
             </Button>
           </div>
         </form>
-      </NewBoardModalStyled>
+      </NewProjectModalStyled>
     </Modal>
   );
 }

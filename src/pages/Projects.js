@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useOvermind } from "../store";
 import Button from "../styles/Button";
-import BoardCard from "../components/BoardCard";
+import ProjectCard from "../components/ProjectCard";
 import Spinner from "../components/Spinner";
-import NewBoardModal from "../components/NewBoardModal";
+import NewProjectModal from "../components/NewProjectModal";
 
-const BoardsStyled = styled.div`
+const ProjectsStyled = styled.div`
   width: 100%;
   height: 100%;
   overflow: auto;
@@ -25,7 +25,7 @@ const BoardsStyled = styled.div`
     align-items: center;
   }
 
-  .boards-container {
+  .projects-container {
     margin-top: 40px;
     display: flex;
     flex-wrap: wrap;
@@ -33,45 +33,45 @@ const BoardsStyled = styled.div`
   }
 `;
 
-export default function Boards() {
+export default function Projects() {
   const {
-    state: { boards: boardsState },
-    actions: { boards: boardActions },
+    state: { projects: projectsState },
+    actions: { projects: projectActions },
   } = useOvermind();
 
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
-    boardActions.resetActiveBoard();
-    boardActions.getBoards();
+    projectActions.resetActiveProject();
+    projectActions.getProjects();
   }, []);
 
   return (
-    <BoardsStyled>
+    <ProjectsStyled>
       <div className="inner-container">
         <div className="header">
-          <span>All Boards</span>
+          <span>All Projects</span>
           <Button onClick={() => setShowModal(true)} style={{ height: "30px" }}>
             + Add
           </Button>
         </div>
 
-        <div className="boards-container">
-          {!boardsState.boardsLoading && !boardsState.boardsError ? (
-            boardsState.boards.map((board) => {
-              return <BoardCard key={board._id} board={board} />;
+        <div className="projects-container">
+          {!projectsState.projectsLoading && !projectsState.projectsError ? (
+            projectsState.projects.map((project) => {
+              return <ProjectCard key={project._id} project={project} />;
             })
           ) : (
             <Spinner style={{ margin: "0px auto" }} />
           )}
 
-          {boardsState.boardsError && !boardsState.boardsLoading && (
-            <span>{boardsState.boardsError}</span>
+          {projectsState.projectsError && !projectsState.projectsLoading && (
+            <span>{projectsState.projectsError}</span>
           )}
         </div>
       </div>
 
-      <NewBoardModal show={showModal} closeModal={() => setShowModal(false)} />
-    </BoardsStyled>
+      <NewProjectModal show={showModal} closeModal={() => setShowModal(false)} />
+    </ProjectsStyled>
   );
 }

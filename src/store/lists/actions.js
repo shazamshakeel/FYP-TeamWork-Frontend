@@ -1,22 +1,17 @@
 import { api } from "../../utils/api";
-// export const state = {
-//   lists: [],
-//   listsLoading: false,
-//   listsError: null,
-// };
 
-export const updateCardInList = ({ state }, payload) => {
-  const { listId, updatedCard } = payload;
+export const updateTaskInList = ({ state }, payload) => {
+  const { listId, updatedTask } = payload;
 
   state.lists.lists.map((list) => {
     if (list._id === listId) {
-      let cards = list.cards.map((card) => {
-        if (card._id === updatedCard._id) {
-          card = updatedCard;
+      let tasks = list.tasks.map((task) => {
+        if (task._id === updatedTask._id) {
+          task = updatedTask;
         }
-        return card;
+        return task;
       });
-      list.cards = cards;
+      list.tasks = tasks;
     }
 
     return list;
@@ -90,115 +85,115 @@ export const updateListTitle = async ({ state }, payload) => {
   }
 };
 
-export const addCardToList = async ({ state }, payload) => {
-  state.lists.newCardLoading = true;
+export const addTaskToList = async ({ state }, payload) => {
+  state.lists.newTaskLoading = true;
   try {
-    const res = await api.post(`/cards`, payload);
+    const res = await api.post(`/tasks`, payload);
 
     if (res.data.success) {
       let listsCopy = [...state.lists.lists];
       listsCopy.forEach((list) => {
         if (list._id === payload.listId) {
           console.log(2222, res.data.data);
-          list.cards.push(res.data.data);
+          list.tasks.push(res.data.data);
         }
       });
 
       state.lists.lists = listsCopy;
     }
-    state.lists.newCardLoading = false;
+    state.lists.newTaskLoading = false;
   } catch (err) {
-    state.lists.newCardLoading = false;
+    state.lists.newTaskLoading = false;
     console.log(err);
   }
 };
 
-export const reorderCards = async ({ state }, payload) => {
+export const reorderTasks = async ({ state }, payload) => {
   const { destination, source, draggableId } = payload;
   console.log({ destination, source, draggableId });
   let listsCopy = [...state.lists.lists];
   // let removed;
 
-  let movingCard = {
+  let movingTask = {
     ...state.lists.lists
       .filter((list) => list._id === source.droppableId)[0]
-      .cards.filter((card) => card._id === draggableId)[0],
+      .tasks.filter((task) => task._id === draggableId)[0],
   };
 
-  //remove card from its list
+  //remove task from its list
   listsCopy.map((list) => {
     if (list._id === source.droppableId) {
-      list.cards = list.cards.filter((card) => card._id !== draggableId);
+      list.tasks = list.tasks.filter((task) => task._id !== draggableId);
     }
     return list;
   });
 
-  //give new position numbers to cards inside list where the card is removed
+  //give new position numbers to tasks inside list where the task is removed
   listsCopy.map((list) => {
     if (list._id === source.droppableId) {
-      list.cards.map((card, index) => {
-        card.position = index;
-        return card;
+      list.tasks.map((task, index) => {
+        task.position = index;
+        return task;
       });
     }
     return list;
   });
 
-  //add card to other list at position
+  //add task to other list at position
   listsCopy.map((list) => {
     if (list._id === destination.droppableId) {
-      movingCard.listId = destination.droppableId;
-      list.cards.splice(destination.index, 0, movingCard);
+      movingTask.listId = destination.droppableId;
+      list.tasks.splice(destination.index, 0, movingTask);
     }
     return list;
   });
 
-  //give new position numbers to cards inside list where the card is added
+  //give new position numbers to tasks inside list where the task is added
   listsCopy.map((list) => {
     if (list._id === destination.droppableId) {
-      let cardsCopy = [...list.cards];
-      cardsCopy.map((card, index) => {
-        card.position = index;
-        return card;
+      let tasksCopy = [...list.tasks];
+      tasksCopy.map((task, index) => {
+        task.position = index;
+        return task;
       });
-      list.cards = cardsCopy;
+      list.tasks = tasksCopy;
     }
     return list;
   });
 
   //ajax here
-  let newCards = [];
+  let newTasks = [];
 
   listsCopy.forEach((list) => {
-    list.cards.forEach((card) => {
-      newCards.push({
-        _id: card._id,
-        listId: card.listId,
-        position: card.position,
+    list.tasks.forEach((task) => {
+      newTasks.push({
+        _id: task._id,
+        listId: task.listId,
+        position: task.position,
       });
     });
   });
 
   let listsCopy2 = JSON.parse(JSON.stringify(listsCopy));
   let newLists = listsCopy2.map((list) => {
-    let tempCards = [];
-    list.cards.forEach((card) => {
-      tempCards.push(card._id);
+    let tempTasks = [];
+    list.tasks.forEach((task) => {
+      tempTasks.push(task._id);
     });
-    list.cards = tempCards;
+    list.tasks = tempTasks;
     return list;
   });
 
   try {
-    const res = await api.put(`/cards/reorder`, {
-      cards: newCards,
+    const res = await api.put(`/tasks/reorder`, {
+      tasks: newTasks,
       lists: newLists,
     });
 
     if (res.data.success) {
       state.lists.lists = listsCopy;
     } else {
-      console.log("Error reordering cards");
+      console.log("Error reordering tasks");
     }
   } catch (err) {
     console.log(err);

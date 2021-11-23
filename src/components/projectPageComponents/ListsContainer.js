@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import { useOvermind } from "../../store";
-import CardContainer from "./CardContainer";
+import TaskContainer from "./TaskContainer";
 import NewListButton from "./NewListButton";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 
@@ -48,7 +48,7 @@ export default function ListsContainer() {
     ) {
       return;
     }
-    listsActions.reorderCards({ destination, source, draggableId });
+    listsActions.reorderTasks({ destination, source, draggableId });
   }
 
   return (
@@ -59,13 +59,13 @@ export default function ListsContainer() {
             <Droppable droppableId={list._id} key={list._id}>
               {(provided) => (
                 <div ref={provided.innerRef} {...provided.droppableProps}>
-                  <CardContainer list={list} key={list._id} />
+                  <TaskContainer list={list} key={list._id} />
                   {provided.placeholder}
                 </div>
               )}
             </Droppable>
           ))}
-          <NewListButton boardId={id} />
+          <NewListButton projectId={id} />
         </div>
       </ListsContainerStyled>
     </DragDropContext>

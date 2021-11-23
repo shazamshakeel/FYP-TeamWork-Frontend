@@ -3,13 +3,13 @@ import styled from "styled-components";
 import Button from "../../styles/Button";
 import { useOvermind } from "../../store";
 
-const NewCardButtonStyled = styled.div`
+const NewTaskButtonStyled = styled.div`
   width: 100%;
   min-height: 32px;
   margin: 24px 0px;
   position: relative;
   z-index: 1;
-  .add-card-action {
+  .add-task-action {
     width: 100%;
     height: 32px;
     border-radius: 8px;
@@ -58,38 +58,38 @@ const NewCardButtonStyled = styled.div`
   }
 `;
 
-export default function NewCardButton({ listId }) {
+export default function NewTaskButton({ listId }) {
   const [showForm, setShowForm] = useState(false);
-  const [newCardName, setNewCardName] = useState("");
+  const [newTaskName, setNewTaskName] = useState("");
 
   const {
     state: { lists: listsState },
     actions: { lists: listsActions },
   } = useOvermind();
 
-  function addNewCardHandler() {
-    //ajax to add new card
+  function addNewTaskHandler() {
+    //ajax to add new task
 
-    if (newCardName.trim() === "") {
+    if (newTaskName.trim() === "") {
       return;
     }
 
     let nextPosition = 0;
 
     if (
-      listsState.lists.filter((list) => list._id === listId)[0]?.cards.length >
+      listsState.lists.filter((list) => list._id === listId)[0]?.tasks.length >
       0
     ) {
       nextPosition =
         Math.max(
           ...listsState.lists
             .filter((list) => list._id === listId)[0]
-            .cards.map((card) => card.position)
+            .tasks.map((task) => task.position)
         ) + 1;
     }
 
-    listsActions.addCardToList({
-      title: newCardName,
+    listsActions.addTaskToList({
+      title: newTaskName,
       listId,
       position: nextPosition,
     });
@@ -99,31 +99,31 @@ export default function NewCardButton({ listId }) {
 
   function closeForm() {
     setShowForm(false);
-    setNewCardName("");
+    setNewTaskName("");
   }
 
   return (
-    <NewCardButtonStyled>
-      <div className="add-card-action" onClick={() => setShowForm(true)}>
-        <span>Add another card</span>
+    <NewTaskButtonStyled>
+      <div className="add-task-action" onClick={() => setShowForm(true)}>
+        <span>Add another task</span>
         <span className="material-icons">add</span>
       </div>
       {showForm && (
         <div className="new-button-form">
           <input
             type="text"
-            placeholder="Enter a title for this card..."
-            value={newCardName}
-            onChange={(e) => setNewCardName(e.target.value)}
+            placeholder="Enter a title for this task"
+            value={newTaskName}
+            onChange={(e) => setNewTaskName(e.target.value)}
           />
           <div className="new-button-form--actions">
             <Button
-              disabled={newCardName.trim() === ""}
+              disabled={newTaskName.trim() === ""}
               bg="var(--green)"
               color="#fff"
-              onClick={addNewCardHandler}
+              onClick={addNewTaskHandler}
             >
-              Add Card
+              Add Task
             </Button>
             <span className="material-icons" onClick={closeForm}>
               close
@@ -131,6 +131,6 @@ export default function NewCardButton({ listId }) {
           </div>
         </div>
       )}
-    </NewCardButtonStyled>
+    </NewTaskButtonStyled>
   );
 }
